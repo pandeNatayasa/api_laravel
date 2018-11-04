@@ -19,6 +19,8 @@ class CreateTbAdminsTable extends Migration
             $table->string('email',250)->unique();
             $table->string('password',250);
             $table->enum('jenis_kelamin',['L','P']);
+            $table->string('no_telp',15);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

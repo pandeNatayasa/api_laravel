@@ -20,7 +20,6 @@ class CreateTbDataJasasTable extends Migration
             $table->unsignedInteger('id_user');
             $table->string('pekerjaan',250);
             $table->integer('usia');
-            $table->date('tanggal_lahir');
             $table->string('no_telp',15);
             $table->string('email',250);
             $table->enum('status',['single','menikah','duda','janda','jomblo']);
