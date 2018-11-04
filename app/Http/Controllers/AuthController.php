@@ -29,7 +29,10 @@ class AuthController extends Controller
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password'))
+            'password' => bcrypt($request->input('password')),
+            'jenis_kelamin'=>$request->input('jenis_kelamin'),
+            'no_telp'=>$request->input('no_telp'),
+            'tanggal_lahir'=>$request->input('tanggal_lahir')
         ]);
         if ($user->save()) {
             return response()->json([
