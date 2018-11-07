@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 // use App\Http\Controllers\Controller;
 
 use App\User;
+use DB;
 
 class AuthController extends Controller
 {
@@ -73,12 +74,19 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
         
-        $token = $this->respondWithToken($token);
+        // $token = $this->respondWithToken($token);
+        $email = $request->input('email');
+        $nameUser = DB::table('users')->select('name')->where('email', '=', $email)->get();
+
+        $user = Auth::user();
         return response()->json([
             'token' => $token,
-            'status' => true
+            'status' => true,
+            'dataUser'=>$user            
         ]);
+
     }
 
     /**
@@ -138,4 +146,23 @@ class AuthController extends Controller
     {
         return Auth::guard();
     }
+
+    /**
+     * Get a JWT token via given credentials.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    // public function data(Request $request)
+    // {
+    //     $email = $request->email;
+    //     $user = User::where('email', '=', $email)->get();
+    //     // return $user;
+    //     // $credentials = [
+    //     //     'email' => $request->input('email')
+    //     // ];
+    //     // return response()->json($credentials);
+    //     return response()->json($user);
+    // }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\tb_admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class TbAdminController extends Controller
 {
@@ -35,9 +37,10 @@ class TbAdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
+    
     /**
      * Display the specified resource.
      *
