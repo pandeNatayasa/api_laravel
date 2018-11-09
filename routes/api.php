@@ -29,5 +29,7 @@ Route::group([
     Route::post('me', 'AuthController@me');
     Route::post('register', 'AuthController@register');
 
+    Route::get('kategori','tbKategoriController@index');
+
 });
 

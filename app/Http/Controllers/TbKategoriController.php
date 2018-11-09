@@ -14,7 +14,10 @@ class TbKategoriController extends Controller
      */
     public function index()
     {
-        //
+        $data_kategori = tb_kategori::all();
+        return response()->json([
+            'dataKategori' => $data_kategori   
+        ]);
     }
 
     /**
