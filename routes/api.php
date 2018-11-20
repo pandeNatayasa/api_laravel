@@ -31,5 +31,13 @@ Route::group([
 
     Route::get('kategori','tbKategoriController@index');
 
+    // Route::resource('jasa','TbDataJasaController');
+    Route::get('showDataJasa/{id}','TbDataJasaController@show');
+
+    Route::post('store_data_jasa','TbDataJasaController@store');
+
+    Route::post('sendNotification','NotificationController@sendNotification');
+
+    Route::post('storeKategori','TbKategoriController@store');
 });
 

@@ -27,10 +27,21 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request){
+
+        if ($request->hasFile('foto_profille')) {
+            $fileFotoProfille=$request->file('foto_profille');
+            $fileFotoProfille->move('img/foto_profille',$fileFotoProfille->getClientOriginalName());
+            $nameFotoProfille = $fileFotoProfille->getClientOriginalName();
+        }else{
+            // return 'no selected image Profil Picture';
+            $nameFotoProfille = 'contact.jpg';
+        }
+
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
+            'foto_profille'=>'/img/foto_profille/'.$nameFotoProfille,
             'jenis_kelamin'=>$request->input('jenis_kelamin'),
             'no_telp'=>$request->input('no_telp'),
             'tanggal_lahir'=>$request->input('tanggal_lahir')

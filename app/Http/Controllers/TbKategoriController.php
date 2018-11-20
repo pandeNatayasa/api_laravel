@@ -38,7 +38,27 @@ class TbKategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->hasFile('logo_kategori')) {
+            $fileLogoKategori=$request->file('logo_kategori');
+            $fileLogoKategori->move('img/logo_kategori',$fileLogoKategori->getClientOriginalName());
+        }else{
+            return 'no selected image Profil Picture';
+        }
+
+        $data = new tb_kategori();
+        $data->logo_kategori='/img/logo_kategori/'.$fileLogoKategori->getClientOriginalName();
+        $data->kategori=$request->kategori;
+
+        $data_kategori = tb_kategori::all();
+
+        if ($data->save()) {
+            return response()->json([
+                'dataKategori' => $data_kategori,
+                'status'=>true
+            ],201);
+        }
+        return response()->json(['message'  => 'failed to create ketagori']);
+        
     }
 
     /**

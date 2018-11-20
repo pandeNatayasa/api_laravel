@@ -16,21 +16,26 @@ class CreateTbDataJasasTable extends Migration
         Schema::create('tb_data_jasas', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('id_kategori');
-            $table->unsignedInteger('id_admin');
+            // $table->unsignedInteger('id_admin');
             $table->unsignedInteger('id_user');
+            $table->unsignedInteger('id_user_admin');
             $table->string('pekerjaan',250);
+            $table->integer('estimasi_gaji');
+            $table->text('pengalaman_kerja');
             $table->integer('usia');
             $table->string('no_telp',15);
             $table->string('email',250);
             $table->enum('status',['single','menikah','duda','janda','jomblo']);
+            $table->enum('status_validasi',['valid','non_valid']);
             $table->string('alamat',250);
             $table->unsignedInteger('id_kecamatan');
             $table->timestamps();
 
             Schema::disableForeignKeyConstraints();
             $table->foreign('id_kategori')->references('id')->on('tb_kategoris');
-            $table->foreign('id_admin')->references('id')->on('tb_admins');
+            // $table->foreign('id_admin')->references('id')->on('tb_admins');
             $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user_admin')->references('id')->on('users');
             $table->foreign('id_kecamatan')->references('id')->on('tb_kecamatans');
         });
     }
