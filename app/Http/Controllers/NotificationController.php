@@ -22,7 +22,7 @@ class NotificationController extends Controller
         $title=$request->title;
         $token=$request->fcm_token;
 
-        $key = 'AIzaSyAvV1wmSduadXVXiAbY71adAwp7LvDXdos';
+        $key = '';
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
         //banyak token
