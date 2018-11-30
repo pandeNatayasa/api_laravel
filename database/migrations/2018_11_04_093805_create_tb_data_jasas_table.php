@@ -28,7 +28,6 @@ class CreateTbDataJasasTable extends Migration
             $table->enum('status',['single','menikah','duda','janda','jomblo']);
             $table->enum('status_validasi',['valid','non_valid']);
             $table->string('alamat',250);
-            $table->unsignedInteger('id_kecamatan');
             $table->timestamps();
 
             Schema::disableForeignKeyConstraints();
@@ -36,7 +35,6 @@ class CreateTbDataJasasTable extends Migration
             // $table->foreign('id_admin')->references('id')->on('tb_admins');
             $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_user_admin')->references('id')->on('users');
-            $table->foreign('id_kecamatan')->references('id')->on('tb_kecamatans');
         });
     }
 

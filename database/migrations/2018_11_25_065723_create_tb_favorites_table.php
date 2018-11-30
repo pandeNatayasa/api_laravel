@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTbKecamatansTable extends Migration
+class CreateTbFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateTbKecamatansTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_kecamatans', function (Blueprint $table) {
+        Schema::create('tb_favorites', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama_kecamatan',250);
-            $table->unsignedInteger('id_provinsi');
+            $table->unsignedInteger('id_user');
+            $table->unsignedInteger('id_data_jasa');
             $table->timestamps();
-            
+
             Schema::disableForeignKeyConstraints();
-            $table->foreign('id_provinsi')->references('id')->on('tb_provinsis');
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_data_jasa')->references('id')->on('tb_data_jasas');
         });
     }
 
@@ -31,6 +32,6 @@ class CreateTbKecamatansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_kecamatans');
+        Schema::dropIfExists('tb_favorites');
     }
 }

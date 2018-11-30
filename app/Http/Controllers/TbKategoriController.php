@@ -4,9 +4,22 @@ namespace App\Http\Controllers;
 
 use App\tb_kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TbKategoriController extends Controller
 {
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -41,17 +54,18 @@ class TbKategoriController extends Controller
         if ($request->hasFile('logo_kategori')) {
             $fileLogoKategori=$request->file('logo_kategori');
             $fileLogoKategori->move('img/logo_kategori',$fileLogoKategori->getClientOriginalName());
+            $nameLogoKategori = $fileLogoKategori->getClientOriginalName();
         }else{
-            return 'no selected image Profil Picture';
+            $nameLogoKategori = 'kerja.png';
         }
 
         $data = new tb_kategori();
-        $data->logo_kategori='/img/logo_kategori/'.$fileLogoKategori->getClientOriginalName();
+        $data->logo_kategori='/img/logo_kategori/'.$nameLogoKategori;
         $data->kategori=$request->kategori;
 
-        $data_kategori = tb_kategori::all();
-
+        
         if ($data->save()) {
+            $data_kategori = tb_kategori::all();
             return response()->json([
                 'dataKategori' => $data_kategori,
                 'status'=>true
@@ -90,9 +104,29 @@ class TbKategoriController extends Controller
      * @param  \App\tb_kategori  $tb_kategori
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tb_kategori $tb_kategori)
+    public function update(Request $request, $id)
     {
-        //
+        if ($request->hasFile('logo_kategori')) {
+            $fileLogoKategori=$request->file('logo_kategori');
+            $fileLogoKategori->move('img/logo_kategori',$fileLogoKategori->getClientOriginalName());
+            $nameLogoKategori = $fileLogoKategori->getClientOriginalName();
+        }else{
+            $nameLogoKategori = 'kerja.png';
+        }
+
+        $data = tb_kategori::find($id);
+        $data->logo_kategori='/img/logo_kategori/'.$nameLogoKategori;
+        $data->kategori=$request->kategori;
+
+        
+        if ($data->save()) {
+            $data_kategori = tb_kategori::all();
+            return response()->json([
+                'dataKategori' => $data_kategori,
+                'status'=>true
+            ],201);
+        }
+        return response()->json(['message'  => 'failed to create ketagori']);
     }
 
     /**
@@ -101,8 +135,18 @@ class TbKategoriController extends Controller
      * @param  \App\tb_kategori  $tb_kategori
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tb_kategori $tb_kategori)
+    public function destroy($id)
     {
-        //
+        $dataKategori = tb_kategori::find($id);
+
+        if ($dataKategori->delete()) {
+            $data_kategori_all = tb_kategori::all();
+            return response()->json([
+                'dataKategori' => $data_kategori_all,
+                'status'=>true
+            ],201);
+        }
+        return response()->json(['message'  => 'failed to create ketagori']);
+
     }
 }

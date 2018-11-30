@@ -23,7 +23,7 @@ Route::group([
     'middleware' => 'api' 
 ], function () {
 		
-    Route::post('login', 'AuthController@login');
+    Route::post('/login', 'AuthController@login')->name('login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
@@ -33,11 +33,23 @@ Route::group([
 
     // Route::resource('jasa','TbDataJasaController');
     Route::get('showDataJasa/{id}','TbDataJasaController@show');
+    Route::get('showDataJasaUser/{id}','TbDataJasaController@showDataJasaUser');
+    Route::get('showDataJasaForAdmin/{id}','TbDataJasaController@showDataJasaforAdmin');
 
     Route::post('store_data_jasa','TbDataJasaController@store');
 
     Route::post('sendNotification','NotificationController@sendNotification');
 
     Route::post('storeKategori','TbKategoriController@store');
+
+    Route::post('storeFavorite','TbFavoriteController@store');
+
+    Route::get('showFavorite/{id}','TbFavoriteController@show');
+
+    Route::delete('delete_kategori/{id}','TbKategoriController@destroy');
+
+    Route::post('update_kategori/{id}','TbKategoriController@update');  
+
+    Route::get('user', 'AuthController@getAuthenticatedUser');
 });
 

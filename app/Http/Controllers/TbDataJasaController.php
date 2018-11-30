@@ -6,9 +6,23 @@ use App\tb_data_jasa;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TbDataJasaController extends Controller
 {
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -50,8 +64,7 @@ class TbDataJasaController extends Controller
             'email'=>$request->input('email'),
             'status'=>$request->input('status'),
             'status_validasi'=>'non_valid',
-            'alamat'=>$request->input('alamat'),
-            'id_kecamatan'=>$request->input('id_kecamatan')
+            'alamat'=>$request->input('alamat')
         ]);
 
         // $data_jasa->save();
@@ -118,6 +131,41 @@ class TbDataJasaController extends Controller
 
         // return response()->json($data_jasa);
         
+    }
+
+    public function showDataJasaforAdmin($id_kategori)
+    {
+        $data_jasa = tb_data_jasa::where('id_kategori','=',$id_kategori)->get();
+
+        $data_user=[];
+        
+        $i = 0;
+        foreach ($data_jasa as $key) {
+            $data_user[]=User::find($key->id_user);
+            $i+=1;
+        }
+
+        return response()->json([
+                'dataJasa'=>$data_jasa,
+                'dataUser'=>$data_user
+            ]);
+    }
+
+    public function showDataJasaUser($id_user){
+        $data_jasa = tb_data_jasa::where('id_user','=',$id_user)->get();
+
+        // $data_user=[];
+        
+        // $i = 0;
+        // foreach ($data_jasa as $key) {
+        //     $data_user[]=User::find($key->id_user);
+        //     $i+=1;
+        // }
+
+        return response()->json($data_jasa
+            );
+
+
     }
 
     /**

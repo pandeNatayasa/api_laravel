@@ -22,6 +22,7 @@ class NotificationController extends Controller
         $title=$request->title;
         $token=$request->fcm_token;
 
+        //variabel key harus diisi dengan key lama dari firebase cloud messaging
         $key = '';
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
