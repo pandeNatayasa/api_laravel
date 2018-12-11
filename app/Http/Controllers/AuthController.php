@@ -204,4 +204,52 @@ class AuthController extends Controller
 
                     return response()->json(compact('user'));
             }
+
+    public function updateFotoProfille(Request $request)
+    {
+        if ($request->hasFile('foto_profille')) {
+            $fileFotoProfille=$request->file('foto_profille');
+            $fileFotoProfille->move('img/foto_profille',$fileFotoProfille->getClientOriginalName());
+            $nameFotoProfille = $fileFotoProfille->getClientOriginalName();
+        }else{
+            // return 'no selected image Profil Picture';
+            $nameFotoProfille = 'contact.jpg';
+        }
+        $data = JWTAuth::parseToken()->authenticate();
+
+        // $data = User::find($id);
+        $data->foto_profille='/img/foto_profille/'.$nameFotoProfille;
+        $token = "";
+        if ($data->save()) {
+            $dataUser=JWTAuth::parseToken()->authenticate();
+            return response()->json([
+                'token' => $token,
+                'status' => true,
+                'dataUser'=>$dataUser            
+            ], 201);
+        }
+        return response()->json(['message'  => 'failed to create user']);
+    }
+
+    public function updateProfille(Request $request,$id){
+        $user=User::find($id);
+        
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->jenis_kelamin=$request->jenis_kelamin;
+        $user->no_telp=$request->no_telp;
+        $user->tanggal_lahir=$request->tanggal_lahir;
+        
+        $token = "";
+        if ($user->save()) {
+            $dataUser=User::find($id);
+            return response()->json([
+                'token' => $token,
+                'status' => true,
+                'dataUser'=>$dataUser            
+            ]);
+        }
+        return response()->json(['message'  => 'failed to create user']);
+    }
+
 }

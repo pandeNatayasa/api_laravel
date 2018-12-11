@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use DB;
 
 class TbFavoriteController extends Controller
 {
@@ -63,6 +64,17 @@ class TbFavoriteController extends Controller
         return response()->json(['message'  => 'failed to create ketagori']);
     }
 
+    public function checkFavorite(Request $request)
+    {
+        $id_user=$request->id_user;
+        $id_data_jasa=$request->id_data_jasa;
+        // $data=DB::table('tb_favorites')->where('id_user','=',$id_user,'and','id_data_jasa','=',$id_data_jasa)->count();
+
+        $data=tb_favorite::where('id_user','=',$id_user)->where('id_data_jasa','=',$id_data_jasa)->count();
+
+        return response()->json(['jumlah_favorite'  => $data]);   
+    }
+
     /**
      * Display the specified resource.
      *
@@ -73,17 +85,17 @@ class TbFavoriteController extends Controller
     {
         $dataFavorite = tb_favorite::where('id_user','=',$id)->get();
 
-        $i = 0;
-        foreach ($dataFavorite as $key) {
-            $data_user[]=User::find($key->id_user);
-            $i+=1;
-        }
+        // $i = 0;
+        // foreach ($dataFavorite as $key) {
+        //     $data_user[]=User::find($key->id_user);
+        //     $i+=1;
+        // }
 
-        $i = 0;
-        foreach ($dataFavorite as $key) {
-            $data_jasa[]=tb_data_jasa::find($key->id_data_jasa);
-            $i+=1;
-        }
+        // $i = 0;
+        // foreach ($dataFavorite as $key) {
+        //     $data_jasa[]=tb_data_jasa::find($key->id_data_jasa);
+        //     $i+=1;
+        // }
 
         return response()->json(
                     $dataFavorite
@@ -119,8 +131,15 @@ class TbFavoriteController extends Controller
      * @param  \App\tb_favorite  $tb_favorite
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tb_favorite $tb_favorite)
+    public function destroy($id)
     {
-        //
+        $data = tb_favorite::find($id);
+        
+        if ($data->delete()){
+            return response()->json([
+                'status'=>true
+            ],201);
+        }
+        return response()->json(['message'  => 'failed to create ketagori']);
     }
 }

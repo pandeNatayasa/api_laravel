@@ -135,7 +135,7 @@ class TbDataJasaController extends Controller
 
     public function showDataJasaforAdmin($id_kategori)
     {
-        $data_jasa = tb_data_jasa::where('id_kategori','=',$id_kategori)->get();
+        $data_jasa = tb_data_jasa::where('id_kategori','=',$id_kategori)->where('status_validasi','!=','delete')->get();
 
         $data_user=[];
         
@@ -152,7 +152,7 @@ class TbDataJasaController extends Controller
     }
 
     public function showDataJasaUser($id_user){
-        $data_jasa = tb_data_jasa::where('id_user','=',$id_user)->get();
+        $data_jasa = tb_data_jasa::where('id_user','=',$id_user)->where('status_validasi','!=','delete')->get();
 
         // $data_user=[];
         
@@ -174,9 +174,16 @@ class TbDataJasaController extends Controller
      * @param  \App\tb_data_jasa  $tb_data_jasa
      * @return \Illuminate\Http\Response
      */
-    public function edit(tb_data_jasa $tb_data_jasa)
+    public function edit($id)
     {
-        //
+        $data = tb_data_jasa::find($id);
+        $data->status_validasi='delete';
+        if ($data->save()){
+            return response()->json([
+                'status'=>true
+            ],201);
+        }
+        return response()->json(['message'  => 'failed to create ketagori']);
     }
 
     /**
@@ -186,9 +193,15 @@ class TbDataJasaController extends Controller
      * @param  \App\tb_data_jasa  $tb_data_jasa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tb_data_jasa $tb_data_jasa)
+    public function update($id)
     {
-        //
+        $data = tb_data_jasa::find($id);
+        $data->status_validasi='valid';
+        if ($data->save()) {
+            $data_jasa = tb_data_jasa::find($id);
+            return response()->json($data_jasa);
+        }
+        return response()->json(['message'  => 'failed to create ketagori']);
     }
 
     /**
@@ -197,8 +210,16 @@ class TbDataJasaController extends Controller
      * @param  \App\tb_data_jasa  $tb_data_jasa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tb_data_jasa $tb_data_jasa)
+    public function destroy($id)
     {
-        //
+        // $data = tb_data_jasa::find($id);
+        
+        // if ($data->delete()){
+        //     return response()->json([
+        //         'status'=>true
+        //     ],201);
+        // }
+        // return response()->json(['message'  => 'failed to create ketagori']);
+   
     }
 }

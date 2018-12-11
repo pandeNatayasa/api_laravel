@@ -51,5 +51,19 @@ Route::group([
     Route::post('update_kategori/{id}','TbKategoriController@update');  
 
     Route::get('user', 'AuthController@getAuthenticatedUser');
+
+    Route::post('checkFavorite','TbFavoriteController@checkFavorite');
+    
+    Route::post('updateFotoProfille', 'AuthController@updateFotoProfille'); 
+
+    Route::post('update_profille/{id}','AuthController@updateProfille');    
+
+    Route::get('delete_data_jasa/{id}','TbDataJasaController@edit'); 
+
+    Route::delete('delete_favorite/{id}','TbFavoriteController@destroy'); 
+
+    Route::get('update_status/{id}','TbDataJasaController@update');
+
+    
 });
 
